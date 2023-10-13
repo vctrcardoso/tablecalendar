@@ -1,19 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:flutter_localization/flutter_localization.dart';
+import 'package:provider/provider.dart';
+import 'package:tablecalendar/calendar_controller.dart';
+
 import 'package:tablecalendar/calendar_screen.dart';
 
+final FlutterLocalization localization = FlutterLocalization.instance;
 void main() {
-  runApp(const MyApp());
-  Intl.defaultLocale = 'pt_BR';
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider(
+        create: (_) => CalendarController(),
+      ),
+    ],
+    child: const MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-  
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      supportedLocales: const [Locale('pt_BR')],
       title: 'Flutter Demo',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
@@ -23,4 +32,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
