@@ -55,6 +55,15 @@ class _CalendarScreenState extends State<CalendarScreen> {
                       controller.setEvents();
                     }
                   },
+                  onCalendarCreated: (pageController) {
+                   
+                      calendarController.setEvents();
+                   
+                  },
+                  onPageChanged: (focusedDay) {
+                    
+                    controller.setFocusedDay(focusedDay);
+                  },
                   calendarBuilders: CalendarBuilders(
                     dowBuilder: (context, day) {
                       var dayName = DateFormat('EEE').format(day);

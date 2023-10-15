@@ -19,6 +19,6 @@ List<Event> eventsData = [
   ),
   Event(
     title: 'Teste 5',
-    dateInitial: DateTime.utc(2023, 10, 12),
+    dateInitial: DateTime.utc(2023, 10, 13),
   ),
 ];
