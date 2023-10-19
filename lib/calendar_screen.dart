@@ -18,9 +18,15 @@ class _CalendarScreenState extends State<CalendarScreen> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<CalendarController>().setSelectedDay(DateTime.now());
+      context.read<CalendarController>().setEvents(context.read<CalendarController>().getEventsForDay(DateTime.now()));
+    });
+  }
 
-    calendarController.setEvents();
-    print(calendarController.selectedEvents);
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override
@@ -52,16 +58,10 @@ class _CalendarScreenState extends State<CalendarScreen> {
                     if (!isSameDay(controller.selectedDay, selectedDay)) {
                       controller.setSelectedDay(selectedDay);
                       controller.setFocusedDay(focusedDay);
-                      controller.setEvents();
+                      controller.setEvents(controller.getEventsForDay(selectedDay),);
                     }
                   },
-                  onCalendarCreated: (pageController) {
-                   
-                      calendarController.setEvents();
-                   
-                  },
                   onPageChanged: (focusedDay) {
-                    
                     controller.setFocusedDay(focusedDay);
                   },
                   calendarBuilders: CalendarBuilders(
@@ -90,43 +90,44 @@ class _CalendarScreenState extends State<CalendarScreen> {
               },
             ),
             const SizedBox(height: 20),
-            context.watch<CalendarController>().selectedEvents.isNotEmpty
-                ? Expanded(
-                    child: ListView.separated(
-                      separatorBuilder: (context, index) =>
-                          const SizedBox(height: 8),
-                      itemCount: context
-                          .watch<CalendarController>()
-                          .selectedEvents
-                          .length,
-                      itemBuilder: (context, index) {
-                        var events =
-                            context.watch<CalendarController>().selectedEvents;
-                        return Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 12),
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          height: 64,
-                          width: 24,
-                          decoration: const BoxDecoration(
-                            color: ColorsConst.appSecondColor,
-                            border: Border(
-                              left: BorderSide(
-                                  color: ColorsConst.appPrimaryColor, width: 6),
-                            ),
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(events[index].dateInitial.toString()),
-                              Text(events[index].title)
-                            ],
-                          ),
-                        );
-                      },
-                    ),
-                  )
-                : Container()
+             Consumer<CalendarController>(
+                  builder: (context, calendar, child) {
+                    return Expanded(
+                        child: ListView.separated(
+                          separatorBuilder: (context, index) =>
+                              const SizedBox(height: 8),
+                          itemCount: context
+                              .watch<CalendarController>()
+                              .selectedEvents
+                              .length,
+                          itemBuilder: (context, index) {
+                            return Container(
+                              margin: const EdgeInsets.symmetric(horizontal: 12),
+                              padding: const EdgeInsets.symmetric(horizontal: 10),
+                              height: 64,
+                              width: 24,
+                              decoration: const BoxDecoration(
+                                color: ColorsConst.appSecondColor,
+                                border: Border(
+                                  left: BorderSide(
+                                      color: ColorsConst.appPrimaryColor, width: 6),
+                                ),
+                              ),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(calendar.selectedEvents[index].dateInitial.toString()),
+                                  Text(calendar.selectedEvents[index].title)
+                                ],
+                              ),
+                            );
+                          },
+                        ),
+                      );
+                  }
+                )
+                
           ],
         ),
       ),

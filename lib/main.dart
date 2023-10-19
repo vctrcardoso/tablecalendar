@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_localization/flutter_localization.dart';
 import 'package:provider/provider.dart';
 import 'package:tablecalendar/calendar_controller.dart';
 
 import 'package:tablecalendar/calendar_screen.dart';
+import 'package:tablecalendar/home_screen.dart';
 
-final FlutterLocalization localization = FlutterLocalization.instance;
 void main() {
   runApp(MultiProvider(
     providers: [
@@ -28,7 +27,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const CalendarScreen(),
+      home: const HomeScreen(),
     );
   }
 }

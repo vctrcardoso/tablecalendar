@@ -21,4 +21,8 @@ List<Event> eventsData = [
     title: 'Teste 5',
     dateInitial: DateTime.utc(2023, 10, 13),
   ),
+  Event(
+    title: 'Teste 5',
+    dateInitial: DateTime.utc(2023, 10, 15),
+  ),
 ];

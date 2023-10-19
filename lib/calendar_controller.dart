@@ -33,10 +33,11 @@ class CalendarController extends ChangeNotifier {
     for (var event in appdata.eventsData) {
       (events[event.dateInitial] ??= []).add(event);
     }
+    notifyListeners();
   }
 
-  void setEvents() {
-    _selectedEvents = getEventsForDay(selectedDay!);
+  void setEvents(List<Event> events) {
+    _selectedEvents = events;
     notifyListeners();
   }
 
